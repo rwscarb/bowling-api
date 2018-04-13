@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from scoreboard import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^v1/bowling/games', views.game_root),
 ]

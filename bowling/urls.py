@@ -20,4 +20,6 @@ from scoreboard import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^v1/bowling/games', views.game_root),
+    url(r'^v1/bowling/players', views.players_root),
+    url(r'^v1/bowling/scores/(?P<game_id>[a-f0-9-]+)', views.game_scores),
 ]

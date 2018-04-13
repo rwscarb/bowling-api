@@ -1,6 +1,12 @@
 from rest_framework.serializers import ModelSerializer
 
-from models import Game, Score
+from models import Game, Score, Player
+
+
+class PlayerSerializer(ModelSerializer):
+    class Meta:
+        model = Player
+        fields = ('name',)
 
 
 class GameSerializer(ModelSerializer):

@@ -30,15 +30,24 @@ def players_root(request):
         return Response(serializer.data)
     elif request.method == 'POST':
         serializer = PlayerSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def game_scores(request, game_id):
-    scores = Score.objects.get(game__id=game_id)
-    serializer = ScoreSerializer(scores)
-
-    return Response(serializer.data)
+    if request.method == 'GET':
+        try:
+            scores = Score.objects.get(game__id=game_id)
+        except Score.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ScoreSerializer(scores)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        data = request.data.copy()
+        data['game'] = game_id
+        serializer = ScoreSerializer(data=data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)

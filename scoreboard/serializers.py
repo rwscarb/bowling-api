@@ -6,16 +6,16 @@ from models import Game, Score, Player
 class PlayerSerializer(ModelSerializer):
     class Meta:
         model = Player
-        fields = ('name',)
+        fields = ('id', 'name', 'created')
 
 
 class GameSerializer(ModelSerializer):
     class Meta:
         model = Game
-        fields = ('id',)
+        fields = ('id', 'created')
 
 
 class ScoreSerializer(ModelSerializer):
     class Meta:
         model = Score
-        fields = ('game',)
+        fields = ('id', 'player', 'game', 'frame', 'attempt', 'value', 'created')

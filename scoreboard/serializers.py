@@ -12,7 +12,8 @@ class PlayerSerializer(ModelSerializer):
 class GameSerializer(ModelSerializer):
     class Meta:
         model = Game
-        fields = ('id', 'created')
+        depth = 1
+        fields = ('id', 'score_set', 'created')
 
 
 class ScoreSerializer(ModelSerializer):

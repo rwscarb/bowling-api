@@ -12,8 +12,8 @@ from models import Game, Score, Player
 def api_helper(request, uid, model, serializer):
     if request.method == 'GET':
         if uid is not None:
-            object = model.objects.get(id=uid)
-            serial = serializer(object)
+            instance = model.objects.get(id=uid)
+            serial = serializer(instance)
         else:
             objects = model.objects.all()
             serial = serializer(objects, many=True)
@@ -23,9 +23,15 @@ def api_helper(request, uid, model, serializer):
         if serial.is_valid(raise_exception=True):
             serial.save()
             return Response(serial.data, status=status.HTTP_201_CREATED)
+    elif request.method == 'PUT':
+        serial = serializer(data=request.data)
+        instance = model.objects.get(id=uid)
+        if serial.is_valid(raise_exception=True):
+            serial.update(instance, serial.validated_data)
+            return Response(serial.data, status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 def players_api(request, player_id=None):
     return api_helper(request, player_id, Player, PlayerSerializer)
 

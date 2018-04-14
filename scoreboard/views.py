@@ -36,7 +36,7 @@ def players_api(request, player_id=None):
     return api_helper(request, player_id, Player, PlayerSerializer)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 def games_api(request, game_id=None):
     return api_helper(request, game_id, Game, GameSerializer)
 

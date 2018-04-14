@@ -1,22 +1,24 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from models import Game, Score, Player
 
 
-class PlayerSerializer(ModelSerializer):
+class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
         fields = ('id', 'name', 'created')
 
 
-class GameSerializer(ModelSerializer):
+class GameSerializer(serializers.ModelSerializer):
+    players = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), many=True)
+
     class Meta:
         model = Game
         depth = 1
         fields = ('id', 'players', 'score_set', 'created')
 
 
-class ScoreSerializer(ModelSerializer):
+class ScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Score
         fields = ('id', 'player', 'game', 'frame', 'attempt', 'value', 'created')

@@ -29,6 +29,10 @@ def api_helper(request, uid, model, serializer):
         if serial.is_valid(raise_exception=True):
             serial.update(instance, serial.validated_data)
             return Response(serial.data, status=status.HTTP_200_OK)
+    elif request.method == 'DELETE':
+        instance = model.objects.get(id=uid)
+        instance.delete()
+        return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST', 'PUT'])
@@ -41,6 +45,6 @@ def games_api(request, game_id=None):
     return api_helper(request, game_id, Game, GameSerializer)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 def scores_api(request, score_id=None):
     return api_helper(request, score_id, Score, ScoreSerializer)

@@ -19,7 +19,10 @@ from scoreboard import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^v1/bowling/games', views.game_root),
-    url(r'^v1/bowling/players', views.players_root),
-    url(r'^v1/bowling/scores/(?P<game_id>[a-f0-9-]+)', views.game_scores),
+    url(r'^v1/bowling/players/(?P<player_id>[a-f0-9-]+)', views.players_api),
+    url(r'^v1/bowling/players', views.players_api),
+    url(r'^v1/bowling/games/(?P<game_id>[a-f0-9-]+)', views.games_api),
+    url(r'^v1/bowling/games', views.games_api),
+    url(r'^v1/bowling/scores/(?P<score_id>[a-f0-9-]+)', views.scores_api),
+    url(r'^v1/bowling/scores', views.scores_api),
 ]

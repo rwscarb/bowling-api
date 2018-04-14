@@ -9,45 +9,32 @@ from serializers import GameSerializer, ScoreSerializer, PlayerSerializer
 from models import Game, Score, Player
 
 
-@api_view(['GET', 'POST'])
-def game_root(request):
+def api_helper(request, uid, model, serializer):
     if request.method == 'GET':
-        games = Game.objects.all()
-        serializer = GameSerializer(games, many=True)
+        if uid is not None:
+            object = model.objects.get(id=uid)
+            serial = serializer(object)
+        else:
+            objects = model.objects.all()
+            serial = serializer(objects, many=True)
+        return Response(serial.data)
     elif request.method == 'POST':
-        game = Game()
-        game.save()
-        serializer = GameSerializer(game)
-
-    return Response(serializer.data)
-
-
-@api_view(['GET', 'POST'])
-def players_root(request):
-    if request.method == 'GET':
-        players = Player.objects.all()
-        serializer = PlayerSerializer(players, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = PlayerSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serial = serializer(data=request.data)
+        if serial.is_valid(raise_exception=True):
+            serial.save()
+            return Response(serial.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(['GET', 'POST'])
-def game_scores(request, game_id):
-    if request.method == 'GET':
-        try:
-            scores = Score.objects.get(game__id=game_id)
-        except Score.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        serializer = ScoreSerializer(scores)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        data = request.data.copy()
-        data['game'] = game_id
-        serializer = ScoreSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+def players_api(request, player_id=None):
+    return api_helper(request, player_id, Player, PlayerSerializer)
+
+
+@api_view(['GET', 'POST'])
+def games_api(request, game_id=None):
+    return api_helper(request, game_id, Game, GameSerializer)
+
+
+@api_view(['GET', 'POST'])
+def scores_api(request, score_id=None):
+    return api_helper(request, score_id, Score, ScoreSerializer)

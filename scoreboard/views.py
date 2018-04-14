@@ -28,7 +28,7 @@ def api_helper(request, uid, model, serializer):
         instance = model.objects.get(id=uid)
         if serial.is_valid(raise_exception=True):
             serial.update(instance, serial.validated_data)
-            return Response(serial.data, status=status.HTTP_201_CREATED)
+            return Response(serial.data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST', 'PUT'])

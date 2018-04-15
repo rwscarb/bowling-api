@@ -10,8 +10,6 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    players = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), many=True)
-
     class Meta:
         model = Game
         depth = 1

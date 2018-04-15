@@ -27,3 +27,6 @@ class Score(models.Model):
     attempt = models.IntegerField(validators=[validators.MinValueValidator(1), validators.MaxValueValidator(2)])
     value = models.IntegerField(validators=[validators.MinValueValidator(0), validators.MaxValueValidator(10)])
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('game', 'player', 'frame', 'attempt')

@@ -19,6 +19,9 @@ class Game(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
+# todo: validate total score of frame is not greater than STRIKE
+# todo: validate 11th frame can't be submitted unless 10th is STRIKE/SPARE
+# todo: validate out of order frames, e.g. first submitted frame is frame#9
 class Score(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     game = models.ForeignKey(Game)

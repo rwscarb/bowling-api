@@ -12,7 +12,10 @@ from models import Game, Score, Player
 def api_helper(request, uid, model, serializer):
     if request.method == 'GET':
         if uid is not None:
-            instance = model.objects.get(id=uid)
+            try:
+                instance = model.objects.get(id=uid)
+            except model.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
             serial = serializer(instance)
         else:
             objects = model.objects.all()

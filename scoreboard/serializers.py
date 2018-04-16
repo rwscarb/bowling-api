@@ -14,6 +14,10 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         depth = 1
         fields = ('id', 'players', 'score_set', 'created')
+        read_only_fields = ('score_set',)
+
+    def to_internal_value(self, data):
+        return dict(players=[Player.objects.get(id=player_id) for player_id in data.pop('players')])
 
 
 class ScoreSerializer(serializers.ModelSerializer):

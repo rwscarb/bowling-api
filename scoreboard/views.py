@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from serializers import GameSerializer, ScoreSerializer, PlayerSerializer
-from models import Game, Score, Player
+from .serializers import GameSerializer, ScoreSerializer, PlayerSerializer
+from .models import Game, Score, Player
 
 
 def api_helper(request, uid, model, serializer):
